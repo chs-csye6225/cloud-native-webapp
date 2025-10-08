@@ -8,6 +8,12 @@ on:
     branches:
       - main
 
+# 權限設置：允許 GitHub Actions 寫入檢查結果和發布測試報告
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   # Job 名稱：build-and-test
   build-and-test:
