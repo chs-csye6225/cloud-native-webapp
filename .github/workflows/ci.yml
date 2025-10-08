@@ -1,0 +1,70 @@
+# GitHub Actions Workflow for Continuous Integration
+
+name: CI - Integration Tests
+
+# 觸發條件：當有 pull request 指向 main branch 時執行
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job 名稱：build-and-test
+  build-and-test:
+    # 運行環境：使用最新版本的 Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # 步驟 1：檢出代碼
+      # actions/checkout 是 GitHub 提供的官方 action
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 2：設置 Java 環境
+      # 因為你的專案使用 Java 21 和 Maven
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          # Java 發行版：使用 Temurin（Eclipse 基金會維護的 OpenJDK）
+          distribution: 'temurin'
+          java-version: '21'
+          # 啟用 Maven 依賴緩存，加快後續構建速度
+          cache: 'maven'
+
+      # 步驟 3：顯示 Java 和 Maven 版本（用於調試）
+      - name: Display Java and Maven versions
+        run: |
+          java -version
+          ./mvnw -version
+
+      # 步驟 4：構建專案並運行測試
+      # clean：清理之前的構建產物 test：編譯代碼並運行所有測試
+      - name: Build and run tests
+        run: ./mvnw clean test
+
+      # 步驟 5：生成測試報告（即使測試失敗也會執行）
+      # if: always() 確保即使前面的步驟失敗，這一步也會執行
+      - name: Generate test report
+        if: always()
+        run: ./mvnw surefire-report:report
+
+      # 步驟 6：上傳測試報告（可選，但很有用）
+      # 測試失敗時可以下載報告查看詳細信息
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
+          retention-days: 7
+
+      # 步驟 7：發布測試摘要到 GitHub
+      # 這會在 PR 頁面顯示測試結果摘要
+      - name: Publish test summary
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Maven Tests
+          path: target/surefire-reports/TEST-*.xml
+          reporter: java-junit
+          fail-on-error: true

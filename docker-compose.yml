@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: webapp_postgres
+    environment:
+      POSTGRES_DB: webapp_db
+      POSTGRES_USER: webapp_user
+      POSTGRES_PASSWORD: webapp_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - webapp-network
+
+volumes:
+  postgres_data:
+
+networks:
+  webapp-network:
+    driver: bridge
+
