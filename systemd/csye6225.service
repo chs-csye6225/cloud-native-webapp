@@ -1,0 +1,33 @@
+[Unit]
+Description=CSYE6225 Web Application
+After=network.target postgresql.service # 在網路和 PostgreSQL 啟動後才啟動此服務
+
+[Service]
+Type=simple # simple:主程序就是服務本身
+
+User=csye6225
+Group=csye6225
+
+WorkingDirectory=/opt/csye6225
+
+# 啟動應用程式的指令
+ExecStart=/usr/bin/java -jar /opt/csye6225/webapp.jar
+
+StandardOutput=journal
+StandardError=journal
+
+Restart=on-failure
+RestartSec=10
+
+Environment="DATABASE_URL=jdbc:postgresql://localhost:5432/csye6225"
+Environment="DATABASE_USERNAME=csye6225"
+Environment="DATABASE_PASSWORD=csye6225_db_pass"
+Environment="DDL_AUTO=update"
+Environment="SHOW_SQL=false"
+Environment="SERVER_PORT=8080"
+
+[Install]
+WantedBy=multi-user.target # 在 multi-user.target 時啟動（相當於開機時）
+
+
+
