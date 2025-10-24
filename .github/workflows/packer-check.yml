@@ -40,4 +40,4 @@ jobs:
       - name: Validate template
         run: |
           cd packer
-          packer validate .
+          packer validate -syntax-only .

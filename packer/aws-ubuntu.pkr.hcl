@@ -70,8 +70,8 @@ build {
   # 2. 安裝必要軟體
   provisioner "shell" {
     inline = [
-      "echo 'Installing Java 17...'",
-      "sudo apt-get install -y openjdk-17-jdk",
+      "echo 'Installing Java 21...'",
+      "sudo apt-get install -y openjdk-21-jdk",
       "echo 'Installing PostgreSQL...'",
       "sudo apt-get install -y postgresql postgresql-contrib"
     ]
