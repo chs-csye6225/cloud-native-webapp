@@ -1,9 +1,11 @@
 [Unit]
 Description=CSYE6225 Web Application
-After=network.target postgresql.service # 在網路和 PostgreSQL 啟動後才啟動此服務
+# 在網路和 PostgreSQL 啟動後才啟動此服務
+After=network.target postgresql.service
 
 [Service]
-Type=simple # simple:主程序就是服務本身
+# simple:主程序就是服務本身
+Type=simple
 
 User=csye6225
 Group=csye6225
@@ -27,7 +29,8 @@ Environment="SHOW_SQL=false"
 Environment="SERVER_PORT=8080"
 
 [Install]
-WantedBy=multi-user.target # 在 multi-user.target 時啟動（相當於開機時）
+# 在 multi-user.target 時啟動（相當於開機時）
+WantedBy=multi-user.target
 
 
 
