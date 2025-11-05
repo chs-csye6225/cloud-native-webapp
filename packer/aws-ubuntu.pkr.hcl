@@ -36,7 +36,7 @@ source "amazon-ebs" "webapp" {
   # AMI 啟動權限設定
   ami_regions = [var.aws_region]
 
-  # EBS Volume 設定
+  # EBS Volume 設定 （Elastic Block Store 一種高性能、持久性的區塊儲存 (Block Storage) 服務）
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
     volume_size           = 8
@@ -72,8 +72,8 @@ build {
     inline = [
       "echo 'Installing Java 21...'",
       "sudo apt-get install -y openjdk-21-jdk",
-      "echo 'Installing PostgreSQL...'",
-      "sudo apt-get install -y postgresql postgresql-contrib"
+      "echo 'Verifying Java installation...'",
+      "java -version"
     ]
   }
 
@@ -114,27 +114,13 @@ build {
     ]
   }
 
-  # 7. 設定 PostgreSQL
-  provisioner "shell" {
-    inline = [
-      "echo 'Configuring PostgreSQL...'",
-      "sudo systemctl start postgresql",
-      "sudo systemctl enable postgresql",
-      "echo 'Creating database and user...'",
-      "sudo -u postgres psql -c \"CREATE DATABASE csye6225;\"",
-      "sudo -u postgres psql -c \"CREATE USER csye6225 WITH PASSWORD '${var.db_password}';\"",
-      "sudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE csye6225 TO csye6225;\"",
-      "sudo -u postgres psql -d csye6225 -c \"GRANT ALL ON SCHEMA public TO csye6225;\"",
-      "sudo -u postgres psql -d csye6225 -c \"ALTER DATABASE csye6225 OWNER TO csye6225;\""
-    ]
-  }
-
-  # 8. 啟用 systemd service
+  # 7. 啟用 systemd service (不啟動，因為還沒有資料庫連線資訊)
   provisioner "shell" {
     inline = [
       "echo 'Enabling systemd service...'",
       "sudo systemctl daemon-reload",
-      "sudo systemctl enable csye6225.service"
+      "sudo systemctl enable csye6225.service",
+      "echo 'Service will be started by user-data script on EC2 launch'"
     ]
   }
 
