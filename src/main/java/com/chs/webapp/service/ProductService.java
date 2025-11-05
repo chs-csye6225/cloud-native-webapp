@@ -21,6 +21,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final ImageService imageService;
 
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request, String authenticatedEmail) {
@@ -119,15 +120,25 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(UUID productId, String authenticatedEmail) {
-        log.info("Deleting product with ID: {} for user: {}", productId, authenticatedEmail);
+    public void deleteProduct(UUID id, String authenticatedEmail) {
+        log.info("Deleting product with ID: {}", id);
 
-        User owner = userService.findByEmail(authenticatedEmail);
-        Product product = productRepository.findByIdAndOwner(productId, owner)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found or access denied"));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
 
+        User authenticatedUser = userService.findByEmail(authenticatedEmail);
+
+        if (!product.getOwner().getId().equals(authenticatedUser.getId())) {
+            throw new IllegalArgumentException("Access denied: You can only delete your own products");
+        }
+
+        // 先刪除所有相關的圖片
+        imageService.deleteProductImages(id);
+
+        // 再刪除產品
         productRepository.delete(product);
-        log.info("Product deleted successfully with ID: {}", productId);
+
+        log.info("Product deleted successfully: {}", id);
     }
 
     private ProductResponse mapToResponse(Product product) {

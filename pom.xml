@@ -30,6 +30,7 @@
 		<java.version>21</java.version>
 		<rest-assured.version>5.4.0</rest-assured.version>
 		<testcontainers.version>1.19.0</testcontainers.version>
+		<aws.sdk.version>2.20.26</aws.sdk.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -132,6 +133,44 @@
 			<artifactId>hamcrest</artifactId>
 			<!-- <version>2.2</version> -->
 			<scope>test</scope>
+		</dependency>
+
+		<!-- AWS SDK for S3 -->
+		<!-- AWS SDK BOM for dependency management -->
+		<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.20.26</version>
+				<type>pom</type>
+				<scope>import</scope>
+		</dependency>
+
+		<!-- AWS SDK for S3 -->
+		<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>s3</artifactId>
+				<version>2.20.26</version>
+		</dependency>
+
+		<!-- AWS SDK Auth -->
+		<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>auth</artifactId>
+				<version>2.20.26</version>
+		</dependency>
+
+		<!-- AWS SDK Core -->
+		<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>aws-core</artifactId>
+				<version>2.20.26</version>
+		</dependency>
+
+		<!-- AWS SDK Regions -->
+		<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>regions</artifactId>
+				<version>2.20.26</version>
 		</dependency>
 	</dependencies>
 

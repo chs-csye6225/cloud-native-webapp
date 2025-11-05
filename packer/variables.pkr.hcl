@@ -28,14 +28,9 @@ variable "ami_name_prefix" {
   default = "csye6225"
 }
 
-# DEMO AWS Account ID (需要你填入)
+# DEMO AWS Account ID
 variable "demo_account_id" {
-  type    = string
-  default = "130214421575" # 稍後填入你的 DEMO 帳號 ID
-}
-
-# 資料庫密碼
-variable "db_password" {
-  type    = string
-  default = "csye6225_db_pass"
+  type        = string
+  description = "AWS Account ID to share the AMI with"
+  default     = "130214421575" # 你的 DEMO 帳號 ID
 }
