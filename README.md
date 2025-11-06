@@ -339,7 +339,7 @@ flowchart LR
          │                               │
     ┌────▼────┐                    ┌────▼────┐
     │   RDS   │                    │   S3    │
-    │  🗄️     │                    │  📦      │
+    │  🗄️     │                    │  📦     │
     └─────────┘                    └─────────┘
          │                               │
     ┌────▼─────────────────┐      ┌─────▼──────────────┐
@@ -353,7 +353,7 @@ flowchart LR
 
 <table>
 <tr>
-<td width="33%" align="center">
+<td width="33%">
 
 ### 🛡️ **Network Security**
 - Private subnets for database
@@ -362,7 +362,7 @@ flowchart LR
 - VPC isolation
 
 </td>
-<td width="33%" align="center">
+<td width="33%">
 
 ### 🔑 **Identity & Access**
 - IAM roles (no access keys)
@@ -371,7 +371,7 @@ flowchart LR
 - EC2 instance profile
 
 </td>
-<td width="33%" align="center">
+<td width="33%">
 
 ### 🔒 **Data Protection**
 - RDS encryption at rest
